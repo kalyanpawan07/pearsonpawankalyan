@@ -1,0 +1,190 @@
+git configure --global user.name 
+git init
+.git
+git clone <source of central repo> <our work space>
+create a file 1.java
+git status
+shows tracked or untracked
+staging --> 
+git add 1.java
+git commit -m "first checkin"
+ex:
+echo "hi" > 1.java
+git status---- untrcaked
+git add 1.java
+git stauts
+git commit -m "second checkin"
+-
+git log -- to see all commit id in 'our' repo
+open terminal for central ,,i.e central.git
+-
+git push [pushes from local to central]
+--
+now lets do a change to 1.java
+echo "hi" >> 1.java
+and at the same time,create new file
+echo "hi" > 2.java
+,now to add both of these files at a time,
+we use
+git add .
+git commit -m "change set"
+git status
+git log
+now we will have all three commits
+---
+craete folder within folder within 
+mkdir -p src/main/java 
+create a new file 3.java
+now get back to test00 and check git status
+nothing 
+but if you add file ,it identifies
+git add .
+git commit -m "third checkin"
+git status
+git log
+--
+to push from local to central repo,
+we must run,
+git config --bool core.bare true
+now we can push
+,git push [our work space]
+----
+one more user
+git clone central.git test01
+git log
+you can see all commits you have done till that point of time.
+now 
+add file 3.java
+git add .
+git commit -m "commit from test01"
+git push
+now you can see the latest commit added to central repo
+-----
+if you want to update existing worksapce 
+like in our case , test00
+we use 
+git pull
+then git log
+we can see all commit id that are present in  the central repo
+-------
+to ignore files,
+create .gitignore file and add the files ,eg: 1.class 2.class
+or simply give *.class to ignore all .class files
+---
+log
+git log -2   shows recent two commits 
+git log -1 latest commit id
+git log --oneline gives short form
+git log --grep "***" gives the result from specific string val
+git log --online |tail -1
+git help log
+---
+create branch
+git branch test
+how to switch
+git checkout test
+---
+branches replicate data individually,repos,
+every branch has its own file and commit ids
+
+---
+Instead of pushing from the test brances to the central repo
+we can first merge the changes from test branch to masster
+and then we push it from out master to central repository master.
+merge happens only within one workspace,not between the worksapces
+----
+git merge <source branch> <destination branch>
+eg: git merge test master 
+or -->if we are already in destination branch,we give
+git merge test
+now we can push new changes to central rep
+------
+if someone wants to pick from the same point where we are working,including the brances we created,
+to push everything including branches ,
+we use 
+git push -u --all   (to push all branches)
+,now if we go to cetral,we get all new changes and brances avaialble in test00
+--------
+to merge specific commit id from test to master
+we use git cherry-pick commitid
+git cherry-pick 36eec39 ~~ git merge 36eec39
+-------
+If we have a conflict,like
+if there is 'you' in 1.class in master branch and 'him' in 1.class in test branch
+if we try to perfrom a merge,
+it gives conflict on which to pick ,so we edit the file and then commit to resolve it
+-----
+if we do some changes and we need them to revert back to old state, "before add and commit"
+we use git stash
+it also craetes backup of these files at 
+git stash list
+---
+To get back the changes we made, we use
+git stash apply stash@{0}
+ and then we commit them
+to see what changes are applied back
+git stash show stash@{0}
+ to clear all the stash lists, we use
+git stash clear
+To apply the latest stash and remove that stash
+we use git stash pop
+--------------
+after making changes and adding ,before commiting,to revert back ,we use
+git reset --soft
+moves to header 
+git reset --mixed moves to header and removes from staging area
+git reset --hard moves header, removes from staging area, removes from local work space
+if we have already commited,to revert back
+git revert commitid[this creates new commit id for removal as the files go to their previous stage but the time stamp got changed]
+---
+to jump between the commits[we will get the previously reverted data also] or to move header position
+git checkout commitid
+to revert , use git checkout master[if you dont know any specific commid it to move the header to]
+----
+even if you remove a file, 
+using git rm 6.java
+it gets into staging area and must be cmmitted
+so that,if someone pulls the central repo,they will get the commit ids of deleted files,if they need to revert back to that commit id,they can
+------
+to get the list of potential untracked files that can be deleted
+git clean -n[dry run] 
+to delete untracked files or dummy files
+git clean -f
+-----------------
+to find a particular commit from large bunch of commit ids
+or to label a particular milestone [version 1.1.1] we use tagging
+git tag -a "R1.1.1" -m "tag for version 1.1.1" commitid
+to view list of tags,we use
+git tag
+to show whats in the tag 
+git show tag or git show commitid
+all tags and other things are conined to your worksapce ,if it must be used by others on other work space ,we need to push the tags too..
+using 
+git push --tags
+one label or tag can be pointed to only one commit id
+but a commit id can have multiple tags ,,eg . V3.1.2, FINAL PROD JAVA,APACHE etc
+-----
+to clone from cental github repo [https]
+git clone url
+and rest are same commands
+--------
+hooks
+if we need to run any other command or put restrictions on who to use,
+we got to .git folder
+>hooks>
+there will be list of files, we edit and rename them to a new file eg: pre-commit
+and we write the dependency
+then if we exeecute a command on pre commit, the pre commit will get executed first and then the base commit command
+
+
+
+
+
+
+
+
+                                                                                                   
+
+
+
+ 
